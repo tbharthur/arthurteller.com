@@ -58,10 +58,11 @@
         .name {
             font-family: 'Cormorant', Georgia, serif;
             font-weight: 300;
-            font-size: clamp(2.5rem, 8vw, 5.5rem);
+            font-style: italic;
+            font-size: clamp(2.8rem, 10vw, 6rem);
             color: #e8e4df;
-            letter-spacing: 0.35em;
-            text-transform: uppercase;
+            letter-spacing: 0.25em;
+            text-transform: lowercase;
             position: relative;
             z-index: 2;
             opacity: 0;
@@ -71,12 +72,12 @@
         @keyframes reveal {
             0% {
                 opacity: 0;
-                letter-spacing: 0.6em;
+                letter-spacing: 0.5em;
                 filter: blur(8px);
             }
             100% {
                 opacity: 1;
-                letter-spacing: 0.35em;
+                letter-spacing: 0.25em;
                 filter: blur(0);
             }
         }
@@ -120,7 +121,7 @@
 <body>
     <div class="ambient"></div>
     <div class="glow" id="glow"></div>
-    <h1 class="name">Arthur Teller</h1>
+    <h1 class="name">hello</h1>
 
     <script>
         const glow = document.getElementById('glow');
