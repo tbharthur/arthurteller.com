@@ -6,7 +6,7 @@
     <title>Arthur Teller</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;1,300&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400&display=swap" rel="stylesheet">
     <style>
         *, *::before, *::after {
             margin: 0;
@@ -20,39 +20,52 @@
         }
 
         body {
-            background: #0a0a0a;
+            background: #09090b;
             display: flex;
             align-items: center;
             justify-content: center;
+            position: relative;
+        }
+
+        /* Ambient glow */
+        .glow {
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(120, 119, 198, 0.08) 0%, rgba(74, 72, 148, 0.04) 40%, transparent 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: breathe 8s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes breathe {
+            0%, 100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
+            50% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
         }
 
         h1 {
-            font-family: 'Cormorant', Georgia, serif;
+            font-family: 'Inter', -apple-system, sans-serif;
             font-weight: 300;
-            font-style: italic;
-            font-size: clamp(2rem, 8vw, 4rem);
-            color: #e8e4df;
-            letter-spacing: 0.2em;
+            font-size: clamp(1.25rem, 4vw, 1.75rem);
+            letter-spacing: 0.25em;
             text-transform: lowercase;
+            color: rgba(255, 255, 255, 0.7);
+            position: relative;
+            z-index: 1;
             opacity: 0;
-            animation: reveal 2.5s ease-out 0.3s forwards;
+            animation: fadeIn 2s ease-out 0.5s forwards;
         }
 
-        @keyframes reveal {
-            0% {
-                opacity: 0;
-                letter-spacing: 0.4em;
-                filter: blur(6px);
-            }
-            100% {
-                opacity: 1;
-                letter-spacing: 0.2em;
-                filter: blur(0);
-            }
+        @keyframes fadeIn {
+            to { opacity: 1; }
         }
     </style>
 </head>
 <body>
-    <h1>coming soon</h1>
+    <div class="glow"></div>
+    <h1>in development</h1>
 </body>
 </html>
