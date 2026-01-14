@@ -3,513 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arthur Teller — Something New</title>
-    <meta name="description" content="Something new is taking shape.">
+    <title>Arthur Teller</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;1,300&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg-deep: #080808;
-            --bg-surface: #0d0d0d;
-            --text-primary: #e8e4df;
-            --text-muted: rgba(232, 228, 223, 0.5);
-            --text-subtle: rgba(232, 228, 223, 0.25);
-            --accent-warm: #c4956a;
-            --accent-warm-dim: rgba(196, 149, 106, 0.15);
-            --accent-cool: rgba(140, 160, 180, 0.08);
-        }
-
         *, *::before, *::after {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        html {
+        html, body {
             height: 100%;
+            overflow: hidden;
         }
 
         body {
-            min-height: 100%;
-            background: var(--bg-deep);
-            font-family: 'DM Sans', sans-serif;
-            color: var(--text-primary);
+            background: #0a0a0a;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            position: relative;
-            overflow-x: hidden;
-            padding: 2rem;
         }
 
-        /* Layered noise texture */
-        body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-            opacity: 0.025;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        /* Particle canvas */
-        #particles {
-            position: fixed;
-            inset: 0;
-            z-index: 0;
-            opacity: 0;
-            animation: fadeIn 3s ease 0.5s forwards;
-        }
-
-        /* Ambient atmospheric gradients */
-        .atmosphere {
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .atmosphere::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background:
-                radial-gradient(ellipse 100% 80% at 30% 20%, rgba(196, 149, 106, 0.06) 0%, transparent 50%),
-                radial-gradient(ellipse 80% 100% at 70% 80%, rgba(100, 120, 160, 0.04) 0%, transparent 50%),
-                radial-gradient(ellipse 60% 40% at 90% 10%, rgba(196, 149, 106, 0.03) 0%, transparent 40%);
-            animation: atmosphereDrift 25s ease-in-out infinite alternate;
-        }
-
-        .atmosphere::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(ellipse 120% 100% at 50% 100%, rgba(8, 8, 8, 0.9) 0%, transparent 70%);
-        }
-
-        @keyframes atmosphereDrift {
-            0% { transform: translate(0, 0) scale(1); opacity: 1; }
-            50% { opacity: 0.7; }
-            100% { transform: translate(-3%, 2%) scale(1.05); opacity: 1; }
-        }
-
-        @keyframes fadeIn {
-            to { opacity: 1; }
-        }
-
-        /* Main content container */
-        .content {
-            position: relative;
-            z-index: 2;
-            text-align: center;
-            max-width: 800px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0;
-        }
-
-        /* The name - hero typography */
-        .name {
+        h1 {
             font-family: 'Cormorant', Georgia, serif;
             font-weight: 300;
-            font-size: clamp(2.5rem, 12vw, 7rem);
-            color: var(--text-primary);
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            line-height: 1;
+            font-style: italic;
+            font-size: clamp(2rem, 8vw, 4rem);
+            color: #e8e4df;
+            letter-spacing: 0.2em;
+            text-transform: lowercase;
             opacity: 0;
-            animation: nameReveal 2.5s cubic-bezier(0.22, 1, 0.36, 1) 0.3s forwards;
-            position: relative;
+            animation: reveal 2.5s ease-out 0.3s forwards;
         }
 
-        .name span {
-            display: inline-block;
-        }
-
-        @keyframes nameReveal {
+        @keyframes reveal {
             0% {
                 opacity: 0;
                 letter-spacing: 0.4em;
-                filter: blur(12px);
-                transform: translateY(10px);
+                filter: blur(6px);
             }
             100% {
                 opacity: 1;
-                letter-spacing: 0.15em;
+                letter-spacing: 0.2em;
                 filter: blur(0);
-                transform: translateY(0);
-            }
-        }
-
-        /* Elegant divider */
-        .divider {
-            width: 80px;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--accent-warm), transparent);
-            margin: 2.5rem 0;
-            opacity: 0;
-            transform: scaleX(0);
-            animation: dividerReveal 1.5s cubic-bezier(0.22, 1, 0.36, 1) 1.8s forwards;
-        }
-
-        @keyframes dividerReveal {
-            to {
-                opacity: 0.6;
-                transform: scaleX(1);
-            }
-        }
-
-        /* Tagline */
-        .tagline {
-            font-family: 'Cormorant', Georgia, serif;
-            font-weight: 400;
-            font-style: italic;
-            font-size: clamp(1.1rem, 3vw, 1.5rem);
-            color: var(--text-muted);
-            letter-spacing: 0.08em;
-            opacity: 0;
-            animation: fadeUp 2s cubic-bezier(0.22, 1, 0.36, 1) 2.2s forwards;
-            margin-bottom: 0.5rem;
-        }
-
-        @keyframes fadeUp {
-            0% {
-                opacity: 0;
-                transform: translateY(15px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Status indicator */
-        .status {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            font-size: 0.75rem;
-            font-weight: 300;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            color: var(--text-subtle);
-            opacity: 0;
-            animation: fadeUp 2s cubic-bezier(0.22, 1, 0.36, 1) 2.6s forwards;
-            margin-top: 3rem;
-        }
-
-        .status-dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: var(--accent-warm);
-            animation: pulse 3s ease-in-out infinite;
-            box-shadow: 0 0 12px var(--accent-warm-dim);
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 0.5; transform: scale(0.9); }
-            50% { opacity: 1; transform: scale(1.1); }
-        }
-
-        /* Email signup - very subtle */
-        .notify {
-            margin-top: 4rem;
-            opacity: 0;
-            animation: fadeUp 2s cubic-bezier(0.22, 1, 0.36, 1) 3s forwards;
-        }
-
-        .notify-label {
-            font-size: 0.7rem;
-            font-weight: 300;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            color: var(--text-subtle);
-            margin-bottom: 1rem;
-            transition: color 0.4s ease;
-        }
-
-        .notify:hover .notify-label {
-            color: var(--text-muted);
-        }
-
-        .notify-form {
-            display: flex;
-            align-items: center;
-            gap: 0;
-            position: relative;
-        }
-
-        .notify-input {
-            background: transparent;
-            border: none;
-            border-bottom: 1px solid var(--text-subtle);
-            padding: 0.75rem 0;
-            font-family: 'DM Sans', sans-serif;
-            font-size: 0.9rem;
-            font-weight: 300;
-            color: var(--text-primary);
-            width: 240px;
-            outline: none;
-            transition: border-color 0.4s ease;
-        }
-
-        .notify-input::placeholder {
-            color: var(--text-subtle);
-            font-style: italic;
-        }
-
-        .notify-input:focus {
-            border-color: var(--accent-warm);
-        }
-
-        .notify-btn {
-            background: transparent;
-            border: none;
-            padding: 0.75rem 1rem;
-            cursor: pointer;
-            color: var(--text-subtle);
-            transition: color 0.3s ease, transform 0.3s ease;
-        }
-
-        .notify-btn:hover {
-            color: var(--accent-warm);
-            transform: translateX(3px);
-        }
-
-        .notify-btn svg {
-            width: 18px;
-            height: 18px;
-            stroke: currentColor;
-            stroke-width: 1.5;
-            fill: none;
-        }
-
-        .notify-success {
-            display: none;
-            font-family: 'Cormorant', Georgia, serif;
-            font-style: italic;
-            color: var(--accent-warm);
-            font-size: 1rem;
-        }
-
-        .notify.submitted .notify-form {
-            display: none;
-        }
-
-        .notify.submitted .notify-success {
-            display: block;
-        }
-
-        /* Cursor glow */
-        .glow {
-            position: fixed;
-            width: 500px;
-            height: 500px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(196, 149, 106, 0.04) 0%, transparent 60%);
-            pointer-events: none;
-            transform: translate(-50%, -50%);
-            z-index: 0;
-            opacity: 0;
-            transition: opacity 0.8s ease;
-        }
-
-        body:hover .glow {
-            opacity: 1;
-        }
-
-        /* Mobile refinements */
-        @media (max-width: 600px) {
-            body {
-                padding: 1.5rem;
-            }
-
-            .name {
-                letter-spacing: 0.1em;
-            }
-
-            .notify-input {
-                width: 180px;
-            }
-
-            .status {
-                margin-top: 2rem;
-            }
-
-            .notify {
-                margin-top: 3rem;
             }
         }
     </style>
 </head>
 <body>
-    <canvas id="particles"></canvas>
-    <div class="atmosphere"></div>
-    <div class="glow" id="glow"></div>
-
-    <main class="content">
-        <h1 class="name">Arthur Teller</h1>
-
-        <div class="divider"></div>
-
-        <p class="tagline">Something new is taking shape</p>
-
-        <div class="status">
-            <span class="status-dot"></span>
-            <span>In development</span>
-        </div>
-
-        <div class="notify" id="notify">
-            <p class="notify-label">Be the first to know</p>
-            <form class="notify-form" id="notifyForm">
-                <input
-                    type="email"
-                    class="notify-input"
-                    placeholder="your@email.com"
-                    required
-                    autocomplete="email"
-                >
-                <button type="submit" class="notify-btn" aria-label="Subscribe">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M5 12h14M12 5l7 7-7 7"/>
-                    </svg>
-                </button>
-            </form>
-            <p class="notify-success">We'll be in touch.</p>
-        </div>
-    </main>
-
-    <script>
-        // Cursor glow follow
-        const glow = document.getElementById('glow');
-        let mouseX = window.innerWidth / 2;
-        let mouseY = window.innerHeight / 2;
-        let glowX = mouseX;
-        let glowY = mouseY;
-
-        document.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-        });
-
-        function animateGlow() {
-            glowX += (mouseX - glowX) * 0.06;
-            glowY += (mouseY - glowY) * 0.06;
-            glow.style.left = glowX + 'px';
-            glow.style.top = glowY + 'px';
-            requestAnimationFrame(animateGlow);
-        }
-        animateGlow();
-
-        // Particle constellation system
-        const canvas = document.getElementById('particles');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
-        const particleCount = 60;
-        const connectionDistance = 120;
-
-        function resize() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        resize();
-        window.addEventListener('resize', resize);
-
-        class Particle {
-            constructor() {
-                this.reset();
-            }
-
-            reset() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.vx = (Math.random() - 0.5) * 0.3;
-                this.vy = (Math.random() - 0.5) * 0.3;
-                this.radius = Math.random() * 1.5 + 0.5;
-                this.opacity = Math.random() * 0.4 + 0.1;
-            }
-
-            update() {
-                this.x += this.vx;
-                this.y += this.vy;
-
-                // Gentle bounce at edges
-                if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
-                if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
-
-                // Subtle attraction to mouse
-                const dx = mouseX - this.x;
-                const dy = mouseY - this.y;
-                const dist = Math.sqrt(dx * dx + dy * dy);
-                if (dist < 200) {
-                    this.vx += dx * 0.00003;
-                    this.vy += dy * 0.00003;
-                }
-
-                // Damping
-                this.vx *= 0.999;
-                this.vy *= 0.999;
-            }
-
-            draw() {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(196, 149, 106, ${this.opacity})`;
-                ctx.fill();
-            }
-        }
-
-        // Initialize particles
-        for (let i = 0; i < particleCount; i++) {
-            particles.push(new Particle());
-        }
-
-        function drawConnections() {
-            for (let i = 0; i < particles.length; i++) {
-                for (let j = i + 1; j < particles.length; j++) {
-                    const dx = particles[i].x - particles[j].x;
-                    const dy = particles[i].y - particles[j].y;
-                    const dist = Math.sqrt(dx * dx + dy * dy);
-
-                    if (dist < connectionDistance) {
-                        const opacity = (1 - dist / connectionDistance) * 0.15;
-                        ctx.beginPath();
-                        ctx.moveTo(particles[i].x, particles[i].y);
-                        ctx.lineTo(particles[j].x, particles[j].y);
-                        ctx.strokeStyle = `rgba(196, 149, 106, ${opacity})`;
-                        ctx.lineWidth = 0.5;
-                        ctx.stroke();
-                    }
-                }
-            }
-        }
-
-        function animateParticles() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            particles.forEach(p => {
-                p.update();
-                p.draw();
-            });
-
-            drawConnections();
-            requestAnimationFrame(animateParticles);
-        }
-        animateParticles();
-
-        // Email form handling (placeholder - connect to your backend)
-        document.getElementById('notifyForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const email = e.target.querySelector('input').value;
-            console.log('Email submitted:', email);
-            // TODO: Send to your email collection service
-            document.getElementById('notify').classList.add('submitted');
-        });
-    </script>
+    <h1>coming soon</h1>
 </body>
 </html>
