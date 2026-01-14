@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OAuth Callback</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0a0a;
+            color: #e8e4df;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+            padding: 40px;
+        }
+        h1 {
+            font-weight: 300;
+            margin-bottom: 20px;
+        }
+        .status {
+            color: #888;
+            margin-bottom: 30px;
+        }
+        .code-box {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            word-break: break-all;
+            font-family: monospace;
+            font-size: 14px;
+        }
+        .label {
+            color: #666;
+            font-size: 12px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+        .error {
+            color: #ff6b6b;
+        }
+        .success {
+            color: #69db7c;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>QuickBooks OAuth</h1>
+        <div class="status" id="status">Processing...</div>
+        <div id="details"></div>
+    </div>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const code = params.get('code');
+        const realmId = params.get('realmId');
+        const state = params.get('state');
+        const error = params.get('error');
+
+        const statusEl = document.getElementById('status');
+        const detailsEl = document.getElementById('details');
+
+        if (error) {
+            statusEl.innerHTML = '<span class="error">Authentication Failed</span>';
+            detailsEl.innerHTML = `
+                <div class="code-box">
+                    <div class="label">Error</div>
+                    ${error}
+                </div>
+            `;
+        } else if (code && realmId) {
+            // Try to redirect to localhost
+            const localUrl = `http://localhost:8000/callback${window.location.search}`;
+
+            statusEl.innerHTML = '<span class="success">Authorization received!</span>';
+            detailsEl.innerHTML = `
+                <p>Redirecting to local server...</p>
+                <p style="color: #666; font-size: 14px; margin-top: 20px;">
+                    If redirect fails, copy these values:
+                </p>
+                <div class="code-box">
+                    <div class="label">Authorization Code</div>
+                    ${code}
+                </div>
+                <div class="code-box">
+                    <div class="label">Realm ID (Company ID)</div>
+                    ${realmId}
+                </div>
+            `;
+
+            // Redirect after a brief delay so user sees the success message
+            setTimeout(() => {
+                window.location.href = localUrl;
+            }, 1500);
+        } else {
+            statusEl.innerHTML = '<span class="error">Missing Parameters</span>';
+            detailsEl.innerHTML = `
+                <div class="code-box">
+                    No authorization code received. Please try again.
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>
